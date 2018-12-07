@@ -8511,7 +8511,9 @@ var Parser = function () {
             } else {
               return _this2.parseURL(res.headers['location'], null, redirectCount + 1).then(resolve, reject);
             }
-          } else if (res.statusCode >= 300) {
+          } else if (res.statusCode === 304) {
+            return resolve('');
+          } else if (res.statusCode >= 300 && res.statusCode !== 304) {
             return reject(new Error("Status code " + res.statusCode));
           }
           var encoding = utils.getEncodingFromContentType(res.headers['content-type']);

@@ -8437,6 +8437,7 @@ var Parser = function () {
     if (!options.maxRedirects) options.maxRedirects = DEFAULT_MAX_REDIRECTS;
     this.options = options;
     this.xmlParser = new xml2js.Parser(this.options.xml2js);
+    this.responseHeaders = null;
   }
 
   _createClass(Parser, [{
@@ -8502,6 +8503,8 @@ var Parser = function () {
           port: urlParts.port,
           path: urlParts.path
         }, function (res) {
+          _this2.responseHeaders = res.headers;
+
           if (_this2.options.maxRedirects && res.statusCode >= 300 && res.statusCode < 400 && res.headers['location']) {
             if (redirectCount === _this2.options.maxRedirects) {
               return reject(new Error("Too many redirects"));
